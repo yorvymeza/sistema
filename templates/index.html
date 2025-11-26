@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Gestión de Trading</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="contenedor-principal">
+        
+        <div class="columna calculadora">
+            
+            <div class="caja-valor verde">
+                <span class="etiqueta">Capital total</span>
+                <span id="capital-total-display" class="valor-grande">118.93$</span>
+                <input type="hidden" id="capital-total" value="118.93">
+            </div>
+
+            <div class="fase">
+                <h3>FASE 01 (Definir el SL o TP del día)</h3>
+                <div class="campo-entrada">
+                    <label for="porcentaje-diario">Porcentaje Diario</label>
+                    <input type="number" step="0.01" id="porcentaje-diario" class="editable-azul" value="5">
+                    <span>%</span>
+                    <span class="descripcion">lo que estás dispuesto a ganar o perder</span>
+                </div>
+                <div class="campo-resultado">
+                    <label>Meta diaria</label>
+                    <span id="meta-diaria" class="resultado-verde">{{ datos.meta_diaria }}</span>
+                    <span class="descripcion">El resultado en valor de la meta</span>
+                </div>
+            </div>
+            
+            <div class="fase">
+                <h3>FASE 02 (Elegir las operaciones para la meta)</h3>
+                <div class="campo-entrada">
+                    <label for="cantidad-operaciones">Cantidad de operaciones para la meta</label>
+                    <input type="number" id="cantidad-operaciones" class="editable-azul" value="2">
+                    <span class="descripcion">Aquí defines la cantidad de operaciones que quieres hacer</span>
+                </div>
+                <div class="campo-entrada">
+                    <label for="porcentaje-lucro">Porcentaje de lucro</label>
+                    <input type="number" step="1" id="porcentaje-lucro" class="editable-azul" value="87">
+                    <span>%</span>
+                    <span class="descripcion">Este es el porcentaje de ganancia que sale en el broker</span>
+                </div>
+                <div class="campo-resultado">
+                    <label>Valor de cada operación</label>
+                    <span id="valor-operacion" class="resultado-verde">{{ datos.valor_de_cada_operacion }}</span>
+                    <span class="descripcion">Valor de entrada por operación</span>
+                </div>
+            </div>
+
+            <div class="fase fase-03">
+                <h3>FASE 03 (Contador automático de operaciones)</h3>
+                <div class="contador-container">
+                    <button id="btn-ganada" class="contador contador-ganada">
+                        <label>Cantidad Ganada</label>
+                        <span id="cantidad-ganada">0</span>
+                    </button>
+                    <button id="btn-perdida" class="contador contador-perdida">
+                        <label>Cantidad perdida</label>
+                        <span id="cantidad-perdida">0</span>
+                    </button>
+                </div>
+                <div class="cantidad-faltante">
+                    <label>Cantidad faltante para terminar</label>
+                    <span id="cantidad-faltante">2</span> 
+                </div>
+            </div>
+         
+            </div>
+
+        <div class="columna historial">
+            <h2 class="titulo-historial">HISTORIAL (Inversiones / Retiradas)</h2>
+            
+            <div class="movimiento-controles">
+            <button id="btn-descargar-excel" class="btn-movimiento btn-inversion" style="margin-top: 10px;">
+        Descargar Historial (Excel)
+          </button>
+            </div>
+
+
+            <div class="movimiento-controles">
+                <input type="date" id="input-fecha" class="editable-azul" value="{{ fecha_actual }}">
+                <input type="number" step="0.01" id="input-valor" placeholder="Valor ($)" class="editable-azul">
+                
+                <button id="btn-registrar-inversion" class="btn-movimiento btn-inversion">
+                    + Inversión
+                </button>
+                <button id="btn-registrar-retirada" class="btn-movimiento btn-retirada">
+                    - Retirada
+                </button>
+            </div>
+
+            <div class="tabla-historial-container">
+                <table id="tabla-movimientos">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+
+                
+            </div>
+
+               <br>
+            <div class="fase fase-04">
+                <h3>FASE 04 (Evolución de Capital)</h3>
+                <div class="grafica-container">
+                    <canvas id="capitalChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="fase fase-05">
+                <h3>FASE 05 (Resumen P&L Neto)</h3>
+                <div class="resumen-container">
+                    <div class="caja-valor verde-claro">
+                        <span class="etiqueta">Ganancia Total Op.</span>
+                        <span id="ganancia-total-op" class="valor-mediano">0.00$</span>
+                    </div>
+                    <div class="caja-valor roja-clara">
+                        <span class="etiqueta">Pérdida Total Op.</span>
+                        <span id="perdida-total-op" class="valor-mediano">0.00$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
